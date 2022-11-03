@@ -16,11 +16,11 @@ def test_different_n_and_r_raises_type_error(n, r):
     with pytest.raises(TypeError):
         ChaosGame(n, r)
 
+@pytest.mark.parametrize("steps, length, discard", [
+    (10, 10, 0), (100, 80, 20), (24, 20, 4)])
 
-def test_starting_point():
-    for i in range(1001):
-        pentagon = ChaosGame(n=5)
-        x = pentagon._starting_point()
-        
-        pentagon.plot_ngon()
+def test_iterate(steps, length, discard):
+    figure = ChaosGame(n=5)
+    x, index = figure.iterate(steps, discard=discard)
+    assert(len(x) == length)
 

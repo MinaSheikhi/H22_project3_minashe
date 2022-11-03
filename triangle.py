@@ -5,6 +5,17 @@ import matplotlib.pyplot as plt
 
 
 def triangle_corners (points: tuple)->np.ndarray:
+    """
+    Defining three corners of a equilateral triangle.
+
+    Arguments:
+        points (tuple):
+            two choosen corners
+    
+    Returns:
+        np.ndarray:
+            The 3 corners        
+    """
     c0, c1 = points 
     c0 = np.array(c0)
     c1 = np.array(c1)
@@ -15,8 +26,18 @@ def triangle_corners (points: tuple)->np.ndarray:
 
 
 
-def starting_point(points: tuple or np.ndarray)->int:
-    
+def starting_point(points: np.ndarray)->np.ndarray:
+
+    """
+    Picking a starting point randomly within the triangle.
+
+    Arguments:
+        points (np.ndarray):
+            The 3 corners of the rectangle
+    returns: 
+        np.ndarray:
+            Random starting point
+    """
     c0, c1, c2 = points
     weights = np.random.random(3) # np.random.random() returns random floats in the half-open interval [0.0, 1.0)
     weights = weights/sum(weights)
@@ -27,31 +48,47 @@ def starting_point(points: tuple or np.ndarray)->int:
 
 def plot_triangle(N: int)->None:
 
-    corners = triangle_corners(([0,0], [1,0]))
-    plt.figure()
     """
-    Generating 10000 points to plot figure resembling Sierpinski Triangle.
+    Plotting the triangle corners
+
+    Arguments:
+        N(int):
+            Number of points that are going to be generated
     """
 
+    corners = triangle_corners(([0,0], [1,0]))
+    plt.figure()
+    
+    # Generating N points to plot figure resembling Sierpinski Triangle.
     for _ in range(N):
         x = starting_point(corners)
         plt.scatter(x[0], x[1], c='r')
 
 
 def list_of_points_on_triangle()->None:
+    """
+    Generating a list with start value x0 and array with triangle corners.
+    returns:
+        corners(np.ndarray):
+            Triangle corners
+        x_list(list):
+            list including startvalue x0
+    """
     corners = triangle_corners(([0,0], [1,0]))
     plt.figure()
     x = starting_point(corners)
     x_list = [x]
     return corners, x_list
 
-def plot_1d(N: int)->None:
+def plot_Sierpinski_Triangle_1d(N: int)->None:
+    """
+    Generating N points, ignoring first 5, to plot figure resembling Sierpinski Triangle.
+    Argument:
+        N(int):
+            Number of points.
+    """
 
     corners, x_list = list_of_points_on_triangle()
-
-    """
-    Generating 10000 points to plot figure resembling Sierpinski Triangle.
-    """
 
     for i in range(N):
         x_list.append((x_list[i] + corners[np.random.randint(low=0, high = 3)])/2) #random.randint velger tilfeldig heltall fra 0 til og med 2
@@ -67,12 +104,14 @@ def plot_1d(N: int)->None:
 
 
 def plot_alt_1e(N: int)->None:
-    
+    """
+    Generating N points to plot figure resembling Sierpinski Triangle and adding 
+    color relative to which corner was picked for each point.
+    Argument:
+            N(int):
+                Number of points.
+    """
     corners, x_list = list_of_points_on_triangle()
-
-    """
-    Generating N points to plot figure resembling Sierpinski Triangle.
-    """
     colors = [0]
     for i in range(N):
         j = np.random.randint(low=0, high=3)#random.randint velger tilfeldig heltall fra 0 til og med 2
@@ -98,9 +137,19 @@ def plot_alt_1e(N: int)->None:
 
 
 def Alternative_iteration_func(N: int)->np.ndarray:
-
+    """
+    Defining colors for the plot by computing individual RGB color value for each point.
+    Argument:
+        N(int):
+            Number of points.
+    returns:
+        np.ndarray:
+            RGB values
+    """
     C = np.zeros((N, 3))
     C[0] = (0,0,0)
+    corners = list_of_points_on_triangle()[0]
+    x_list = np.zeros((N, 2))
 
     r0 = np.array([1,0,0]) #red
     r1 = np.array([0,1,0]) #green
@@ -110,19 +159,21 @@ def Alternative_iteration_func(N: int)->np.ndarray:
     for i in range(N-1):
         j = np.random.randint(3)
         C[i+1] = (C[i] + r[j])/2
+        x_list[i+1] = ((x_list[i] + corners[j])/2) # the corners get the same index as the color list C
 
-    return C[5:]
+    return C[5:], x_list[5:]
 
 def Alernative_plot_color_Sierpinski(N: int)->None:
+    """
+    Plotting Sierpinski Triangle with colors using RGB values.
+    Argument:
+        N(int):
+            Number of points.
+    """
 
-    corners, x_list = list_of_points_on_triangle()
-    colors = Alternative_iteration_func(N)
+    colors, x = Alternative_iteration_func(N)
 
-    for i in range(N):
-        x_list.append((x_list[i] + corners[np.random.randint(low=0, high = 3)])/2)
-
-    x_list = np.array(x_list[6:])
-    plt.scatter(*zip(*x_list), c=colors, s=0.2)
+    plt.scatter(*zip(*x), c=colors, s=0.2)
     plt.axis('equal')
     plt.axis('off')
     plt.show()
