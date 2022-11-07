@@ -55,7 +55,7 @@ class ChaosGame:
             x0 += corners[i] * weights[i]      
         return x0
 
-    def iterate(self, steps: int = 10000, discard: int = 5)->np.ndarray:
+    def iterate(self, steps: int = 30000, discard: int = 5)->np.ndarray:
         """
         Generating points from randomly picked corner, storing generated points and the indicies.
         Arguments:
