@@ -125,7 +125,6 @@ def plot_alt_1e(N: int)->None:
     red = x_list[colors == 0]  #colors == 0 gir en liste med True og False og deretter drar ut liste med punkter som korresponderer True.
     green = x_list[colors == 1]
     blue = x_list[colors == 2]
-
   
     plt.scatter(*zip(*corners), c='b')
     plt.scatter(red[:,0], red[:,1], s = 0.1, marker = '.', color = 'red')
@@ -180,13 +179,7 @@ def Alernative_plot_color_Sierpinski(N: int)->None:
 
 
 if __name__ == '__main__':
-    #plot_triangle(1001)
-    #plot_1d(10000)
-    #plot_alt_1e(10000)
+    plot_triangle(1001)
+    plot_Sierpinski_Triangle_1d(10000)
+    plot_alt_1e(10000)
     Alernative_plot_color_Sierpinski(10000)
-
-
-
-
-
-
